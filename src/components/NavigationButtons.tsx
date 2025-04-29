@@ -1,51 +1,41 @@
-import React from 'react';
-import { useFormContext } from '../context/FormContext';
-
+import React from "react";
+import { useFormContext } from "../context/FormContext";
 interface NavigationButtonsProps {
   isLastSection: boolean;
 }
-
-const NavigationButtons: React.FC<NavigationButtonsProps> = ({ isLastSection }) => {
-  const { 
-    form, 
-    currentSectionIndex, 
-    setCurrentSectionIndex, 
+const NavigationButtons: React.FC<NavigationButtonsProps> = ({
+  isLastSection,
+}) => {
+  const {
+    form,
+    currentSectionIndex,
+    setCurrentSectionIndex,
     validateSection,
-    formValues 
+    formValues,
   } = useFormContext();
-
   const handlePrev = () => {
     if (currentSectionIndex > 0) {
       setCurrentSectionIndex(currentSectionIndex - 1);
     }
   };
-
   const handleNext = () => {
     if (!form) return;
-    
     const currentSection = form.sections[currentSectionIndex];
     const isValid = validateSection(currentSection);
-    
     if (isValid && currentSectionIndex < form.sections.length - 1) {
       setCurrentSectionIndex(currentSectionIndex + 1);
-      // Smooth scroll to top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-
   const handleSubmit = () => {
     if (!form) return;
-    
     const currentSection = form.sections[currentSectionIndex];
     const isValid = validateSection(currentSection);
-    
     if (isValid) {
-      console.log('Form submitted with data:', formValues);
-      // Here you would typically send the data to your backend
-      alert('Form submitted successfully! Check console for form data.');
+      console.log("Form submitted with data:", formValues);
+      alert("Form submitted successfully! Check console for form data.");
     }
   };
-
   return (
     <div className="flex justify-between mt-8">
       <button
@@ -54,13 +44,12 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ isLastSection }) 
         disabled={currentSectionIndex === 0}
         className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
           currentSectionIndex === 0
-            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
         }`}
       >
         Previous
       </button>
-      
       {isLastSection ? (
         <button
           type="button"
@@ -81,5 +70,4 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ isLastSection }) 
     </div>
   );
 };
-
 export default NavigationButtons;

@@ -1,60 +1,50 @@
-import React from 'react';
-import { FormField as FormFieldType } from '../types';
-import { useFormContext } from '../context/FormContext';
-
+import React from "react";
+import { FormField as FormFieldType } from "../types";
+import { useFormContext } from "../context/FormContext";
 interface FormFieldProps {
   field: FormFieldType;
 }
-
 const FormField: React.FC<FormFieldProps> = ({ field }) => {
   const { formValues, setFormValues, formErrors } = useFormContext();
-
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
     const { name, value, type } = e.target as HTMLInputElement;
-    
-    if (type === 'checkbox') {
+    if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
       setFormValues({ ...formValues, [name]: checked });
     } else {
       setFormValues({ ...formValues, [name]: value });
     }
   };
-
   const handleMultiSelect = (value: string) => {
     const currentValues = (formValues[field.fieldId] as string[]) || [];
-    
     const newValues = currentValues.includes(value)
-      ? currentValues.filter(v => v !== value)
+      ? currentValues.filter((v) => v !== value)
       : [...currentValues, value];
-    
     setFormValues({
       ...formValues,
-      [field.fieldId]: newValues
+      [field.fieldId]: newValues,
     });
   };
-
   const renderField = () => {
     switch (field.type) {
-      case 'text':
-      case 'email':
-      case 'tel':
-      case 'date':
+      case "text":
+      case "email":
+      case "tel":
+      case "date":
         return (
           <input
             type={field.type}
             id={field.fieldId}
             name={field.fieldId}
-            value={(formValues[field.fieldId] as string) || ''}
+            value={(formValues[field.fieldId] as string) || ""}
             onChange={handleChange}
             placeholder={field.placeholder}
             className={`w-full px-4 py-2 border rounded-md ${
-              formErrors[field.fieldId] 
-                ? 'border-red-500' 
-                : 'border-gray-300'
+              formErrors[field.fieldId] ? "border-red-500" : "border-gray-300"
             } focus:outline-none focus:ring-2 focus:ring-blue-500`}
             data-testid={field.dataTestId}
             required={field.required}
@@ -62,19 +52,16 @@ const FormField: React.FC<FormFieldProps> = ({ field }) => {
             minLength={field.minLength}
           />
         );
-      
-      case 'textarea':
+      case "textarea":
         return (
           <textarea
             id={field.fieldId}
             name={field.fieldId}
-            value={(formValues[field.fieldId] as string) || ''}
+            value={(formValues[field.fieldId] as string) || ""}
             onChange={handleChange}
             placeholder={field.placeholder}
             className={`w-full px-4 py-2 border rounded-md ${
-              formErrors[field.fieldId] 
-                ? 'border-red-500' 
-                : 'border-gray-300'
+              formErrors[field.fieldId] ? "border-red-500" : "border-gray-300"
             } focus:outline-none focus:ring-2 focus:ring-blue-500`}
             data-testid={field.dataTestId}
             required={field.required}
@@ -83,26 +70,23 @@ const FormField: React.FC<FormFieldProps> = ({ field }) => {
             rows={5}
           />
         );
-      
-      case 'dropdown':
+      case "dropdown":
         return (
           <select
             id={field.fieldId}
             name={field.fieldId}
-            value={(formValues[field.fieldId] as string) || ''}
+            value={(formValues[field.fieldId] as string) || ""}
             onChange={handleChange}
             className={`w-full px-4 py-2 border rounded-md ${
-              formErrors[field.fieldId] 
-                ? 'border-red-500' 
-                : 'border-gray-300'
+              formErrors[field.fieldId] ? "border-red-500" : "border-gray-300"
             } focus:outline-none focus:ring-2 focus:ring-blue-500`}
             data-testid={field.dataTestId}
             required={field.required}
           >
             <option value="">Select an option</option>
             {field.options?.map((option) => (
-              <option 
-                key={option.value} 
+              <option
+                key={option.value}
                 value={option.value}
                 data-testid={option.dataTestId}
               >
@@ -111,8 +95,7 @@ const FormField: React.FC<FormFieldProps> = ({ field }) => {
             ))}
           </select>
         );
-      
-      case 'radio':
+      case "radio":
         return (
           <div className="space-y-2">
             {field.options?.map((option) => (
@@ -122,7 +105,9 @@ const FormField: React.FC<FormFieldProps> = ({ field }) => {
                   id={`${field.fieldId}-${option.value}`}
                   name={field.fieldId}
                   value={option.value}
-                  checked={(formValues[field.fieldId] as string) === option.value}
+                  checked={
+                    (formValues[field.fieldId] as string) === option.value
+                  }
                   onChange={handleChange}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500"
                   data-testid={option.dataTestId}
@@ -138,12 +123,10 @@ const FormField: React.FC<FormFieldProps> = ({ field }) => {
             ))}
           </div>
         );
-      
-      case 'checkbox':
+      case "checkbox":
         return (
           <div className="space-y-2">
             {field.options ? (
-              // Multiple checkboxes
               field.options.map((option) => (
                 <div key={option.value} className="flex items-center">
                   <input
@@ -151,8 +134,10 @@ const FormField: React.FC<FormFieldProps> = ({ field }) => {
                     id={`${field.fieldId}-${option.value}`}
                     name={`${field.fieldId}-${option.value}`}
                     checked={
-                      Array.isArray(formValues[field.fieldId]) && 
-                      (formValues[field.fieldId] as string[]).includes(option.value)
+                      Array.isArray(formValues[field.fieldId]) &&
+                      (formValues[field.fieldId] as string[]).includes(
+                        option.value
+                      )
                     }
                     onChange={() => handleMultiSelect(option.value)}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500"
@@ -167,7 +152,6 @@ const FormField: React.FC<FormFieldProps> = ({ field }) => {
                 </div>
               ))
             ) : (
-              // Single checkbox
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -189,20 +173,16 @@ const FormField: React.FC<FormFieldProps> = ({ field }) => {
             )}
           </div>
         );
-      
       default:
         return <p>Unsupported field type: {field.type}</p>;
     }
   };
-
-  // Don't render label for single checkbox as it's rendered with the input
-  const shouldRenderLabel = !(field.type === 'checkbox' && !field.options);
-
+  const shouldRenderLabel = !(field.type === "checkbox" && !field.options);
   return (
     <div className="mb-4">
       {shouldRenderLabel && (
-        <label 
-          htmlFor={field.fieldId} 
+        <label
+          htmlFor={field.fieldId}
           className="block text-sm font-medium text-gray-700 mb-1"
         >
           {field.label}
@@ -216,5 +196,4 @@ const FormField: React.FC<FormFieldProps> = ({ field }) => {
     </div>
   );
 };
-
 export default FormField;

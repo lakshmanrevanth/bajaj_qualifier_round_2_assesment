@@ -1,17 +1,12 @@
-import React from 'react';
-import { FormProvider, useFormContext } from './context/FormContext';
-import Login from './pages/Login';
-import DynamicForm from './pages/DynamicForm';
-
+import React from "react";
+import { FormProvider, useFormContext } from "./context/FormContext";
+import Login from "./pages/Login";
+import DynamicForm from "./pages/DynamicForm";
 const AppContent: React.FC = () => {
   const { user, form } = useFormContext();
-
-  // If user is not logged in, show login page
   if (!user) {
     return <Login />;
   }
-
-  // If user is logged in but form is not fetched yet, show loading
   if (!form) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center">
@@ -22,11 +17,8 @@ const AppContent: React.FC = () => {
       </div>
     );
   }
-
-  // If user is logged in and form is fetched, show the dynamic form
   return <DynamicForm />;
 };
-
 function App() {
   return (
     <FormProvider>
@@ -36,5 +28,4 @@ function App() {
     </FormProvider>
   );
 }
-
 export default App;
