@@ -4,9 +4,18 @@ import Login from "./pages/Login";
 import DynamicForm from "./pages/DynamicForm";
 const AppContent: React.FC = () => {
   const { user, form } = useFormContext();
+<<<<<<< HEAD
   if (!user) {
     return <Login />;
   }
+=======
+
+  if (!user) {
+    return <Login />;
+  }
+
+
+>>>>>>> 60d8cdabe14d1b2fe2bd05bc3e22c8eb3af07d61
   if (!form) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center">
@@ -17,6 +26,11 @@ const AppContent: React.FC = () => {
       </div>
     );
   }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 60d8cdabe14d1b2fe2bd05bc3e22c8eb3af07d61
   return <DynamicForm />;
 };
 function App() {
@@ -28,4 +42,8 @@ function App() {
     </FormProvider>
   );
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 60d8cdabe14d1b2fe2bd05bc3e22c8eb3af07d61
 export default App;
