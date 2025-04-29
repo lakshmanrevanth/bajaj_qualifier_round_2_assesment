@@ -1,12 +1,15 @@
 import React from "react";
 import { useFormContext } from "../context/FormContext";
 import FormSection from "../components/FormSection";
-import ProgressIndicator from "../components/ProgressIndicator";
+
 const DynamicForm: React.FC = () => {
   const { form, currentSectionIndex, clearForm } = useFormContext();
+
   if (!form) return null;
+
   const currentSection = form.sections[currentSectionIndex];
   const isLastSection = currentSectionIndex === form.sections.length - 1;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 py-8 px-4">
       <div className="max-w-3xl mx-auto">
@@ -19,10 +22,10 @@ const DynamicForm: React.FC = () => {
             Logout
           </button>
         </div>
-        <ProgressIndicator />
         <FormSection section={currentSection} isLast={isLastSection} />
       </div>
     </div>
   );
 };
+
 export default DynamicForm;
